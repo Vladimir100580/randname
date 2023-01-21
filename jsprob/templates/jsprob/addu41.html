@@ -1,0 +1,79 @@
+{% extends 'jsprob/shabl.html' %}
+{% block title %} Добавление ученика {% endblock %}
+{% block content %}
+
+<aside>
+    <h2 class="featuress" style="font-style: italic; font-size: min(50px, 2.5vw);" > Ознакомьтесь со статистикой класса </h2>
+    <h4 class="featuress" style="font-style: italic; font-size: min(40px, 2vw);" > При необходимости введите нового ученика </h4>
+</aside>
+
+    <div class="features">
+             <h5 class='leftstr'style='color: blue'> Ф.И. учащегося </h5>
+             <h5 class='centstr'style='color: blue'> Выходов к доске </h5>
+             <h5 class='rightstr'style='color: blue'> Баллов </h5>
+           {% for mas in nms %}
+                     {% if mas.0 == '0' %}
+                     <h6 class='leftstr'style='color:#AD1457'> {{mas.1}} </h6>
+                     <h6 class='centstr'style='color:#AD1457'> {{mas.2}} </h6>
+                     <h6 class='rightstr'style='color:#AD1457'> {{mas.3}} </h6>
+                     {% endif %}
+                     {% if mas.0 == '3' %}
+                     <h5 class='leftstr' style='color: white'> {{mas.1}} </h5>
+                     <h5 class='centstr'style='color: white'> {{mas.2}} </h5>
+                     <h5 class='rightstr' style='color: white'> {{mas.3}} </h5>
+                     {% endif %}
+                     {% if mas.0 == '1' %}
+                     <h6 class='leftstr' style='color: #0000ff'> {{mas.1}} </h6>
+                     <h6 class='centstr'style='color: #0000ff'> {{mas.2}} </h6>
+                     <h6 class='rightstr' style='color: #0000ff'> {{mas.3}} </h6>
+                     {% endif %}
+                     {% if mas.0 == '2' %}
+                     <h6 class='leftstr' style='color: #2E7D32'> {{mas.1}} </h6>
+                     <h6 class='centstr'style='color: #2E7D32'> {{mas.2}} </h6>
+                     <h6 class='rightstr' style='color: #2E7D32'> {{mas.3}} </h6>
+                     {% endif %}
+                {% endfor %}
+        <div style="clear: left"></div>
+
+        </br>
+
+        <form action="" method="get">
+                {% csrf_token %}
+        <h5 style="font-style: italic; font-size: min(25px, 1.8vw);" id = 'wt'> Введите фаимлию и имя ученика через пробел </h5>
+        <h4> <input type="text" id="inpu" name="famim" placeholder='ФИ ученика' maxlength="100"  size="30"> </h4></br>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn-sm" id = 'butt1' type="submit" name="intfi" onclick="Func()"> Добавить ученика </button></br>
+        <div style="height:10px"></div>
+        <a style="font-size: max(13px, 1.3vw);" href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
+        </br></br>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn-sm" id = 'butt3' type="submit" name="delfi" onclick="Func()"> Удалить ученика </button></br>
+
+    </form>
+    </div>
+    <style>
+   .leftstr {
+    float: left;
+    width: 60%;
+    text-align: left;
+   }
+
+   .centstr {
+    float: left;
+    width: 20%;
+    text-align: left;
+   }
+   .rightstr {
+    float: left;
+    width: 20%;
+    text-align: left;
+   }
+     </style>
+
+    <script>
+    function Func() {
+                document.getElementById('inpu').style.display='none';
+                document.getElementById('butt1').style.display='none';
+                document.getElementById('butt2').style.display='none';
+                document.getElementById('butt3').style.display='none';
+                document.getElementById('wt').innerHTML = 'Пожалуйста, подождите.';}
+    </script>
+{% endblock %}

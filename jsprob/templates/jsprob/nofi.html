@@ -1,0 +1,14 @@
+{% extends 'jsprob/shabl.html' %}
+{% block title %} Такого ученика нет в классе {% endblock %}
+{% block content %}
+
+    <div class="features">
+        </br>
+        </br>
+        <h2 style="font-style: italic; font-size: min(50px, 2.5vw);"> В {{kl}} классе нет учащегося </h2></br>
+        <h2 style="font-style: italic; font-size: min(50px, 2.5vw);"> {{fami}} </h2></br>
+        <form action="" method="get">
+             <a href="{% url 'addu41' %}" class="btn btn-success"> ПОНЯТНО </a>
+        </form>
+    </div>
+{% endblock %}
