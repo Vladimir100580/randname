@@ -1,0 +1,58 @@
+body {
+}
+
+aside {
+    float: up;
+    background: #0d6efd;
+    width: 100%;
+    padding: 0.5%;
+    height: 15%;
+    color: #fff;
+    border: 2px solid #800000;
+}
+
+aside .logo {
+    font-size: 0px;
+    margin-left: 0px;
+    font-weight: boult;
+    position: relative;
+    top: 1px;
+}
+
+aside button {
+    margin-left: 0px;
+    }
+
+
+main {
+min-height: 100vh;
+}
+
+main .features {
+    float: left;
+    background: #40E0D0;
+    width: 100%;
+    padding: 1%;
+    min-height: 80vh;
+    text-align: center;
+    margin-top: 0px;
+    color: #000;
+    border-up: 3px solid #800000;
+}
+
+main .featuress {
+    font-style: italic;
+    text-align: center;
+}
+
+main form {
+    text-align: center;
+    margin-left: 0%;
+    width: 100%;
+    margin-top 20px;
+}
+
+
+ * {
+      touch-action: manipulation;
+  }

@@ -1,0 +1,61 @@
+{% extends 'jsprob/shabl.html' %}
+{% block title %} Случайный выбор {% endblock %}
+{% block content %}
+
+<aside>
+    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 2.5vw);"> Здравствуйте{{nm}}! </h5>
+    <h5 class="featuress" id = 'wait0' style="font-style: italic; font-size: min(40px, 2.2vw);"> Укажите, что необходимо выполнить </h5>
+</aside>
+
+    <div class="features">
+
+
+         <form action="" method="get">
+            {% csrf_token %}
+         <h4 id = 'wait'> </h4>
+        {% if not user.is_authenticated %}
+        <h5 style="font-style: italic; font-size: min(35px, 2vw);"> Если Вы уже регистрировались введите </h5>
+        <h4> <input type="text" id="inpu" name="lg" placeholder='Ваш уникальный Логин' maxlength="100"  size="20"> </h4></br>
+
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ВВЕСТИ </button></br>
+        <div style="height:10px"></div>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn" id = 'butt2' type="submit" name="reg" onclick="Func()"> Зарегистрироваться </button></br></br>
+        {% else %}
+        </br>
+
+        <a style="font-size: min(18px, 1.4vw);" href="{% url 'begin' %}" id = "butt3" class="btn btn-success" onclick="Func()"> НАЧАТЬ ВЫБОРКУ </a></br>
+        <div style="height:10px"></div>
+        <a style="font-size: min(18px, 1.4vw);" href="{% url 'addkl' %}" id = "butt4" class="btn btn-success" onclick="Func()"> Добавить класс </a></br>
+        <div style="height:10px"></div>
+
+         {% if f == 1 %}
+        <a style="font-size: min(18px, 1.4vw);" href="{% url 'addu4' %}" id = "butt5" class="btn btn-success" onclick="Func()"> Добавить учеников в класс </a></br>
+        <div style="height:10px"></div>
+        {% endif %}
+        <a style="font-size: min(18px, 1.4vw);" href="{% url 'logout' %}" id = "butt6" class="btn btn-danger" onclick="Func()"> Выйти из аккаунта </a>
+        {% endif %}
+
+    </form>
+    </div>
+
+    <script>
+    f={{f}};
+    fl={{fl}};
+    function Func() {
+    if (fl==0) {document.getElementById('inpu').style.display='none';
+        document.getElementById('butt1').style.display='none';
+        document.getElementById('butt2').style.display='none';
+        }
+    if (fl==1)  {
+         document.getElementById('butt3').style.display='none';
+         document.getElementById('butt4').style.display='none';
+         document.getElementById('butt6').style.display='none';
+         if (f==1) {document.getElementById('butt5').style.display='none';}
+         }
+    var txt2 = document.getElementById('wait');
+    txt2.innerHTML = 'ПОЖАЛУЙСТА, ОЖИДАЙТЕ';
+    txt2.style.cssText = 'font-style: italic; font-size: 36px; margin-top: 50px;';
+    }
+
+    </script>
+{% endblock %}
