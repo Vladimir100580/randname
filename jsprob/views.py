@@ -21,7 +21,6 @@ def hello(request):
     f = 0
     if DataKlass.objects.filter(log=user_id).exists(): f = 1
 
-
     if 'reg' in answer:
         return redirect('regist')
     if 'intlg' in answer:
@@ -33,6 +32,12 @@ def hello(request):
             return redirect('home')
         else:
             return render(request, 'jsprob/nezar.html')
+    if 'begin' in answer:
+        request.session['wayrnd'] = '1'
+        return redirect('addu4')
+    if 'addu4' in answer:
+        request.session['wayrnd'] = '2'
+        return redirect('addu4')
     return render(request, 'jsprob/priv.html', {'nm': nm, 'fl': fl, 'fl0': fl0, 'f': f})
 
 
@@ -60,7 +65,40 @@ def regist(request):
 
 
 def begin(request):
-    print('Ку-ку')
+    answer = request.GET
+    user_id = request.user.username
+    if (user_id == ''): return redirect('home')
+    kl = request.session['klas_use']
+    klData = DataKlass.objects.filter(log=user_id, klass=kl).values_list('fios', 'vyhods', 'balls')
+    nms = klData[0][0].split('$}%*№')
+    vyhs = klData[0][1].split('$}%*№')
+    bals = klData[0][2].split('$}%*№')
+    print('!!', nms, vyhs, bals)
+    datnvb = []
+    for i in range(len(nms)):
+        datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
+
+    if 'gogo' in answer:
+        st = answer.__getitem__('iskl').strip()
+        if st != '':
+            arisk = StringToArrayIntegers(st).arr
+        datnvb = []
+        for i in arisk:
+            if i not in range(1, len(nms) + 1):
+                return render(request, 'jsprob/nonom.html', {'i': str(i)})
+        nms1 = []
+        vyhrnd = []
+
+        for i in range(0, len(nms)):
+            if (i+1) not in arisk:
+
+                datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
+
+
+        return render(request, 'jsprob/start.html', {'nms': datnvb})
+
+    return render(request, 'jsprob/begin.html', {'nms': datnvb})
+
 
 
 def addkl(request):
@@ -93,13 +131,12 @@ def addu4(request):
         request.session['klas_use'] = kls[0][0]
         return redirect('addu41')
     klasMas = [i[0] for i in kls]
-    print('klasMas-', klasMas)
 
     if 'intlg' in answer:
         kl = answer.__getitem__('nomm')
         request.session['klas_use'] = kl
-        return redirect('addu41')
-
+        if request.session['wayrnd'] == '1': return redirect('begin')
+        if request.session['wayrnd'] == '2': return redirect('addu41')
     return render(request, 'jsprob/addu4.html', {'klasss': klasMas})
 
 
@@ -113,17 +150,17 @@ def addu41(request):
     nms = klData[0][0].split('$}%*№')
     vyhs = klData[0][1].split('$}%*№')
     bals = klData[0][2].split('$}%*№')
-    fl = 1
-    while fl == 1:
-        fl = 0
-        for i in range(len(nms)-1):
-            if nms[i] > nms[i + 1]:
-                nms[i], nms[i + 1] = nms[i + 1], nms[i]
-                vyhs[i], vyhs[i + 1] = vyhs[i + 1], vyhs[i]
-                bals[i], bals[i + 1] = bals[i + 1], bals[i]
-                fl = 1
+    # fl = 1
+    # while fl == 1:
+    #     fl = 0
+    #     for i in range(len(nms)-1):
+    #         if nms[i] > nms[i + 1]:
+    #             nms[i], nms[i + 1] = nms[i + 1], nms[i]
+    #             vyhs[i], vyhs[i + 1] = vyhs[i + 1], vyhs[i]
+    #             bals[i], bals[i + 1] = bals[i + 1], bals[i]
+    #             fl = 1
     datnvb = []
-    for i in range(len(nms)): datnvb.append([str(i % 3), nms[i], vyhs[i], bals[i]])
+    for i in range(len(nms)): datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
     if 'intfi' in answer:
         fami = answer.__getitem__('famim').strip()
         if len(fami) < 3: return redirect('addu41')
@@ -133,12 +170,6 @@ def addu41(request):
         vyhs.append('0')
         bals.append('0')
         f = 1
-        # kar = DataKlass.objects.get(log=user_id, klass=kl)
-        # kar.fios = '$}%*№'.join(nms)
-        # kar.vyhods = '$}%*№'.join(vyhs)
-        # kar.balls = '$}%*№'.join(bals)
-        # kar.save()
-        # return redirect('addu41')
     if 'delfi' in answer:
         fami = answer.__getitem__('famim').strip()
         if len(fami) < 3: return redirect('addu41')
@@ -150,6 +181,15 @@ def addu41(request):
         bals.pop(i)
         f = 1
     if f == 1:
+        fl = 1
+        while fl == 1:
+            fl = 0
+            for i in range(len(nms) - 1):
+                if nms[i] > nms[i + 1]:
+                    nms[i], nms[i + 1] = nms[i + 1], nms[i]
+                    vyhs[i], vyhs[i + 1] = vyhs[i + 1], vyhs[i]
+                    bals[i], bals[i + 1] = bals[i + 1], bals[i]
+                    fl = 1
         kar = DataKlass.objects.get(log=user_id, klass=kl)
         kar.fios = '$}%*№'.join(nms)
         kar.vyhods = '$}%*№'.join(vyhs)
@@ -157,3 +197,21 @@ def addu41(request):
         kar.save()
         return redirect('addu41')
     return render(request, 'jsprob/addu41.html', {'nms': datnvb})
+
+
+class StringToArrayIntegers:
+    def __init__(self, st):
+        f = 0
+        s = ''
+        mas = []
+        st = st + ' '
+        for i in st:
+            if i.isdigit() or i == '-':
+                s += i
+                f = 1
+            else:
+                if f == 1:
+                    mas.append(int(float(s)))
+                    s = ''
+                    f = 0
+        self.arr = mas

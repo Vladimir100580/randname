@@ -23,13 +23,13 @@
         {% else %}
         </br>
 
-        <a style="font-size: min(18px, 1.4vw);" href="{% url 'begin' %}" id = "butt3" class="btn btn-success" onclick="Func()"> НАЧАТЬ ВЫБОРКУ </a></br>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt3' type="submit" name="begin" onclick="Func()"> НАЧАТЬ </button></br>
         <div style="height:10px"></div>
         <a style="font-size: min(18px, 1.4vw);" href="{% url 'addkl' %}" id = "butt4" class="btn btn-success" onclick="Func()"> Добавить класс </a></br>
         <div style="height:10px"></div>
 
          {% if f == 1 %}
-        <a style="font-size: min(18px, 1.4vw);" href="{% url 'addu4' %}" id = "butt5" class="btn btn-success" onclick="Func()"> Добавить учеников в класс </a></br>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt5' type="submit" name="addu4" onclick="Func()"> Добавить учеников в класс </button></br>
         <div style="height:10px"></div>
         {% endif %}
         <a style="font-size: min(18px, 1.4vw);" href="{% url 'logout' %}" id = "butt6" class="btn btn-danger" onclick="Func()"> Выйти из аккаунта </a>

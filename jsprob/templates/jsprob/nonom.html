@@ -1,0 +1,14 @@
+{% extends 'jsprob/shabl.html' %}
+{% block title %} Такого номера нет {% endblock %}
+{% block content %}
+
+    <div class="features">
+        </br>
+        </br>
+        <h2 style="font-style: italic; font-size: min(50px, 2.5vw);"> № {{i}} отсутствует в списке </h2></br>
+
+        <form action="" method="get">
+             <a href="{% url 'begin' %}" class="btn btn-success"> ПОНЯТНО </a>
+        </form>
+    </div>
+{% endblock %}
