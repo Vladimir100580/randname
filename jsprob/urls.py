@@ -15,6 +15,7 @@ urlpatterns = [
     path('addu4', views.addu4, name='addu4'),
     path('addu41', views.addu41, name='addu41'),
     path('begin', views.begin, name='begin'),
+    path('start', views.start, name='start'),
     # path('dayend', views.dayend, name='dayend'),
     # path('instr', views.instr, name='instr'),
     # path('itog', views.itog, name='itog'),

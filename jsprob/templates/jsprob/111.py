@@ -1,17 +1,10 @@
 from random import randint
 
-p1 = ['gtnz']
+nms1 = ['Пучиклазик Коля', 'Рудислав Вася']
 
-print('@%>$'.join(p1))
+s = [[ord(i) for i in n] for n in nms1]
 
 
-
-o = [['sdfsdfs', '039'],['r5324yh','ds2']]
-for i in o[0][1]:
-    print(i, type(i), ord(i))
-
-s = []
-s.append(7)
 print(s)
 
 # def gene(pol):

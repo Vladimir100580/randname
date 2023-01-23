@@ -1,0 +1,81 @@
+{% extends 'jsprob/shabl.html' %}
+{% block title %} Выборка {% endblock %}
+{% block content %}
+
+
+    <div class="features">
+     <h4 id = 'name'> </h4>
+     <h4 id = 'name1'> </h4>
+    <button style="margin-top: 25vh; font-size: min(30px, 2.7vw);" class="btn btn-success btn" id = 'butt1' onclick="Funcb()"> ЗАПУСК </button></br>
+
+    </div>
+
+
+    <script>
+    localStorage.setItem('kontr', 1);
+    arnam = {{nam}};
+    vyh = {{vyh}};
+    arrn = [];
+    kolnam = arnam.length;
+    for (i = 0; i < kolnam; i++)
+        {
+        s = ''
+        for (k = 0; k < arnam[i].length; k++)
+            {
+            s += String.fromCharCode(arnam[i][k])
+            }
+        arrn.push(s)
+        }
+    rgr = 0;
+    arp = [];
+    for (i = 0; i < vyh.length; i++)
+        {
+         rgr += 1024 / (2 ** vyh[i])
+         arp.push(rgr)
+        }
+
+
+
+    function Funcb()
+        {
+            localStorage.setItem('kontr', 1);
+            i = 0;
+            j = 1;
+            p = 0;
+            if (localStorage.getItem('kontr') == 1)
+            {Funca();
+            timerId = setInterval(() => Funca(), 100);}
+
+        function Funca () {
+             if (i % 20 == 0) {j++}
+             if (i == 90) {
+                clearInterval(timerId);
+                localStorage.setItem('kontr', 2);
+                console.log("Hello");
+                Funcend();
+                }
+             i++;
+             if (i%j == 0) {
+             a = Math.floor(Math.random() * rgr) + 1;
+             p = 0;
+             while (a > arp[p]) {p++;}
+             }
+             razm = Math.floor(1200 / arrn[p].length) / 10;
+             fs = 'font-size: min(64px, ' + razm + 'vw)';
+
+             document.getElementById('name').innerHTML = arrn[p];
+             document.getElementById('name').style.cssText = 'font-style: italic; ' + fs + '; color: blue';
+            }
+           }
+
+    function Funcend()
+        {
+             console.log("Hello1");
+             razm = Math.floor(1400 / arrn[p].length) / 10;
+             fs = 'font-size: min(72px, ' + razm + 'vw)';
+             document.getElementById('name1').innerHTML = arrn[p];
+             document.getElementById('name1').style.cssText = 'font-style: italic; ' + fs + '; color: red';
+        }
+
+    </script>
+{% endblock %}

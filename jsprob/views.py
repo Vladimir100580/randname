@@ -73,7 +73,7 @@ def begin(request):
     nms = klData[0][0].split('$}%*№')
     vyhs = klData[0][1].split('$}%*№')
     bals = klData[0][2].split('$}%*№')
-    print('!!', nms, vyhs, bals)
+    # print('!!', nms, vyhs, bals)
     datnvb = []
     for i in range(len(nms)):
         datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
@@ -82,24 +82,40 @@ def begin(request):
         st = answer.__getitem__('iskl').strip()
         if st != '':
             arisk = StringToArrayIntegers(st).arr
+        else: arisk = [];
         datnvb = []
         for i in arisk:
             if i not in range(1, len(nms) + 1):
                 return render(request, 'jsprob/nonom.html', {'i': str(i)})
         nms1 = []
         vyhrnd = []
-
+        ukaz = []
         for i in range(0, len(nms)):
             if (i+1) not in arisk:
+                nms1.append(nms[i])
+                vyhrnd.append(int(float(vyhs[i])))
+                ukaz.append(i)
+                datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], i])
 
-                datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
-
+        request.session['rndpernamord'] = [[ord(i) for i in n] for n in nms1]
+        request.session['rndpervyh'] = vyhrnd
+        request.session['rndperukaz'] = ukaz
+        return redirect('start')
 
         return render(request, 'jsprob/start.html', {'nms': datnvb})
 
     return render(request, 'jsprob/begin.html', {'nms': datnvb})
 
 
+def start(request):
+
+    data = {
+        'nam': request.session['rndpernamord'],
+        'vyh': request.session['rndpervyh'],
+        'ukaz': request.session['rndperukaz']
+    }
+
+    return render(request, 'jsprob/start.html', data)
 
 def addkl(request):
     answer = request.GET
