@@ -114,6 +114,10 @@ def start(request):
         'vyh': request.session['rndpervyh'],
         'ukaz': request.session['rndperukaz']
     }
+    answer = request.GET
+    if 'kb' in answer:
+        b = answer.__getitem__('kb')
+        print('ball=', b)
 
     return render(request, 'jsprob/start.html', data)
 
