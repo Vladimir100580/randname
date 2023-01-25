@@ -103,13 +103,11 @@ def begin(request):
         request.session['rndpervyh'] = vyhrnd
         return redirect('start')
 
-        return render(request, 'jsprob/start.html', {'nms': datnvb})
-
     return render(request, 'jsprob/begin.html', {'nms': datnvb})
 
 
 def start(request):
-
+    print('vyh', request.session['rndpervyh'])
     data = {
         'nam': request.session['rndpernamord'],
         'vyh': request.session['rndpervyh'],
@@ -124,19 +122,24 @@ def start(request):
         kl = request.session['klas_use']
         kar = DataKlass.objects.get(log=user_id, klass=kl)
         nms = kar.fios.split('$}%*№')
-        vyhs = kar.vyhods.split('$}%*№')
-        bals = kar.balls.split('$}%*№')
+        print(kar.vyhods.split('$}%*№'))
+        vyhs = [int(float(i)) for i in kar.vyhods.split('$}%*№')]
+        bals = [int(float(i)) for i in kar.balls.split('$}%*№')]
+        print('req', request.session['rndpervyh'])
         p = nms.index(u4)
-        vyhs[p] = str(int(float(vyhs[p])+1))
-        bals[p] = str(int(float(bals[p]) + b))
+        vyhs[p] = vyhs[p] + 1
+        bals[p] = bals[p] + b
+        request.session['rndpervyh'] = vyhs;
+        vyhs = [str(int(i)) for i in vyhs]
+        bals = [str(int(i)) for i in bals]
         kar.vyhods = '$}%*№'.join(vyhs)
         kar.balls = '$}%*№'.join(bals)
         kar.save()
     if 'rep' in answer: return redirect('start')
     if 'klass' in answer: return redirect('begin')
 
-
     return render(request, 'jsprob/start.html', data)
+
 
 def addkl(request):
     answer = request.GET

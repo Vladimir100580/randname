@@ -48,10 +48,12 @@
         arrn.push(s)
         }
     rgr = 0;
-    arp = [];
+    arp = [0];
     for (i = 0; i < vyh.length; i++)
         {
-         rgr += 8 / (2 ** vyh[i])
+         k = 2 ** (3 - vyh[i]);
+         if (k < 2) {k = 0;}
+         rgr += k;
          arp.push(rgr)
          console.log('sds', arp)
         }
@@ -95,10 +97,10 @@
                 }
              i++;
              if (i%j ==  0 && i <= t - rr) {
-             a = Math.floor(Math.random() * rgr) + 1;
-             p = 0;
-             console.log(p, arp);
-             while (a > arp[p]) {p++;}
+             a = Math.random() * rgr;
+             p = arrn.length;
+             console.log(p, a, arp);
+             while (a < arp[p]) {p--;}
              }
              razm = Math.floor(1200 / arrn[p].length) / 10;
              fs = 'font-size: min(64px, ' + razm + 'vw)';
