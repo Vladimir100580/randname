@@ -4,8 +4,12 @@ nms1 = ['Пучиклазик Коля', 'Рудислав Вася']
 
 s = [[ord(i) for i in n] for n in nms1]
 
-
 print(s)
+
+s = ''
+k = s.split('@@')
+k.append('43')
+print(k)
 
 # def gene(pol):
 #     while True:

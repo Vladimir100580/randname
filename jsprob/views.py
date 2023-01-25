@@ -1,8 +1,6 @@
-import time, datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from random import randint
-from .models import DataKlass, Indexs
+from .models import DataKlass
 from django.contrib.auth import authenticate, login
 
 
@@ -73,7 +71,6 @@ def begin(request):
     nms = klData[0][0].split('$}%*№')
     vyhs = klData[0][1].split('$}%*№')
     bals = klData[0][2].split('$}%*№')
-    # print('!!', nms, vyhs, bals)
     datnvb = []
     for i in range(len(nms)):
         datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
@@ -82,24 +79,28 @@ def begin(request):
         st = answer.__getitem__('iskl').strip()
         if st != '':
             arisk = StringToArrayIntegers(st).arr
-        else: arisk = [];
+        else: arisk = []
         datnvb = []
         for i in arisk:
             if i not in range(1, len(nms) + 1):
                 return render(request, 'jsprob/nonom.html', {'i': str(i)})
+        k = 0
+        for i in nms:
+            if float(vyhs[k]) ** 2 >= 8 and k not in arisk:
+                print('k', k, float(vyhs[k]) ** 2, arisk)
+                arisk.append(k)
+            k += 1
+
         nms1 = []
         vyhrnd = []
-        ukaz = []
         for i in range(0, len(nms)):
             if (i+1) not in arisk:
                 nms1.append(nms[i])
                 vyhrnd.append(int(float(vyhs[i])))
-                ukaz.append(i)
                 datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], i])
 
         request.session['rndpernamord'] = [[ord(i) for i in n] for n in nms1]
         request.session['rndpervyh'] = vyhrnd
-        request.session['rndperukaz'] = ukaz
         return redirect('start')
 
         return render(request, 'jsprob/start.html', {'nms': datnvb})
@@ -112,12 +113,28 @@ def start(request):
     data = {
         'nam': request.session['rndpernamord'],
         'vyh': request.session['rndpervyh'],
-        'ukaz': request.session['rndperukaz']
     }
     answer = request.GET
     if 'kb' in answer:
-        b = answer.__getitem__('kb')
-        print('ball=', b)
+        b = float(answer.__getitem__('kb'))
+        u4 = request.COOKIES.get('pndnameu4')
+        print('ball=', b, u4)
+        user_id = request.user.username
+        if (user_id == ''): return redirect('home')
+        kl = request.session['klas_use']
+        kar = DataKlass.objects.get(log=user_id, klass=kl)
+        nms = kar.fios.split('$}%*№')
+        vyhs = kar.vyhods.split('$}%*№')
+        bals = kar.balls.split('$}%*№')
+        p = nms.index(u4)
+        vyhs[p] = str(int(float(vyhs[p])+1))
+        bals[p] = str(int(float(bals[p]) + b))
+        kar.vyhods = '$}%*№'.join(vyhs)
+        kar.balls = '$}%*№'.join(bals)
+        kar.save()
+    if 'rep' in answer: return redirect('start')
+    if 'klass' in answer: return redirect('begin')
+
 
     return render(request, 'jsprob/start.html', data)
 
@@ -170,15 +187,6 @@ def addu41(request):
     nms = klData[0][0].split('$}%*№')
     vyhs = klData[0][1].split('$}%*№')
     bals = klData[0][2].split('$}%*№')
-    # fl = 1
-    # while fl == 1:
-    #     fl = 0
-    #     for i in range(len(nms)-1):
-    #         if nms[i] > nms[i + 1]:
-    #             nms[i], nms[i + 1] = nms[i + 1], nms[i]
-    #             vyhs[i], vyhs[i + 1] = vyhs[i + 1], vyhs[i]
-    #             bals[i], bals[i + 1] = bals[i + 1], bals[i]
-    #             fl = 1
     datnvb = []
     for i in range(len(nms)): datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
     if 'intfi' in answer:
@@ -186,9 +194,14 @@ def addu41(request):
         if len(fami) < 3: return redirect('addu41')
         if DataKlass.objects.filter(log=user_id, klass=kl).exists() and fami in nms:
             return render(request, 'jsprob/ujusefi.html', {'fami': fami, 'kl': kl})
-        nms.append(fami)
-        vyhs.append('0')
-        bals.append('0')
+        if nms[0] == '':
+            nms[0] = fami
+            vyhs[0] = '0'
+            bals[0] = '0'
+        else:
+            nms.append(fami)
+            vyhs.append('0')
+            bals.append('0')
         f = 1
     if 'delfi' in answer:
         fami = answer.__getitem__('famim').strip()

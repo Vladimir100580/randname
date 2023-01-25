@@ -4,32 +4,33 @@
 
 
     <div class="features">
-    <button style="margin-top: 25vh; font-size: min(30px, 2.7vw);" class="btn btn-success btn" id = 'butt1' onclick="Funcb()"> ЗАПУСК </button></br>
+    <button style="margin-top: 20vh; font-size: min(32px, 2.8vw);" class="btn btn-success btn" id = 'butt1' onclick="Funcb()"> ЗАПУСК </button></br></br>
     <form action="" method="get">
             {% csrf_token %}
+    <button style="font-size: min(23px, 2.0vw);" class="btn btn-success btn" id = 'butt7' type="submit" name="klass" onclick="Fun1()"> К СПИСКУ КЛАССА </button></br></br>
+
 
      <h4 id = 'name'> </h4>
      <h4 id = 'name1'> </h4>
 
-
-    <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn" id = 'butt2' type="submit" name="break" onclick="Fun()"> Отменить </button></br></br>
+    </br>
+    </br></br>
+    </br>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt3' type="submit" value="0" name="kb" onclick="Fun()"> 0 Баллов </button>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt4' type="submit" value="1" name="kb" onclick="Fun()"> 1 Балл </button>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt5' type="submit" value="2" name="kb" onclick="Fun()"> 2 Балла </button>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt6' type="submit" value="3" name="kb" onclick="Fun()"> 3 Балла </button></br></br>
-    <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn" id = 'butt8' type="submit" name="rep" onclick="Fun()"> СНОВА </button>
-    <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn" id = 'butt7' type="submit" name="start" onclick="Fun()"> Начальное меню </button></br></br>
+    <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn-sm" id = 'butt8' type="submit" name="rep" onclick="Fun()"> Отмена. СНОВА </button>
+
     </form>
     </div>
 
 
     <script>
-    document.getElementById('butt2').style.display='none';
     document.getElementById('butt3').style.display='none';
     document.getElementById('butt4').style.display='none';
     document.getElementById('butt5').style.display='none';
     document.getElementById('butt6').style.display='none';
-    document.getElementById('butt7').style.display='none';
     document.getElementById('butt8').style.display='none';
 
     localStorage.setItem('kontr', 1);
@@ -50,19 +51,35 @@
     arp = [];
     for (i = 0; i < vyh.length; i++)
         {
-         rgr += 1024 / (2 ** vyh[i])
+         rgr += 8 / (2 ** vyh[i])
          arp.push(rgr)
+         console.log('sds', arp)
         }
 
+    function Fun1()
+        {
+             document.getElementById('butt1').style.display='none';
+             document.getElementById('butt7').style.display='none';
+        }
 
+    function Fun()
+         {
+              document.getElementById('butt3').style.display='none';
+              document.getElementById('butt4').style.display='none';
+              document.getElementById('butt5').style.display='none';
+              document.getElementById('butt6').style.display='none';
+              document.getElementById('butt8').style.display='none';
+         }
 
     function Funcb()
         {
             document.getElementById('butt1').style.display='none';
+            document.getElementById('butt7').style.display='none';
             localStorage.setItem('kontr', 1);
             i = 0;
             j = 0;
             p = 0;
+            rr = Math.floor(Math.random() * 6) + 5;
             t = Math.floor(Math.random() * 15) + 85;
             if (localStorage.getItem('kontr') == 1)
             {Funca();
@@ -77,33 +94,33 @@
                 Funcend();
                 }
              i++;
-             if (i%j ==  0 && i <= t - 5) {
+             if (i%j ==  0 && i <= t - rr) {
              a = Math.floor(Math.random() * rgr) + 1;
              p = 0;
+             console.log(p, arp);
              while (a > arp[p]) {p++;}
              }
              razm = Math.floor(1200 / arrn[p].length) / 10;
              fs = 'font-size: min(64px, ' + razm + 'vw)';
 
              document.getElementById('name').innerHTML = arrn[p];
-             document.getElementById('name').style.cssText = 'margin-top: 10vh; font-style: italic; ' + fs + '; color: blue';
+             document.getElementById('name').style.cssText = 'font-style: italic; ' + fs + '; color: blue';
             }
            }
 
     function Funcend()
         {
-             console.log("Hello1");
              razm = Math.floor(1400 / arrn[p].length) / 10;
              fs = 'font-size: min(200px, ' + razm + 'vw)';
              document.getElementById('name1').innerHTML = arrn[p];
              document.getElementById('name1').style.cssText = 'font-style: italic; ' + fs + '; color: red';
-             document.getElementById('butt2').style.display='none';
              document.getElementById('butt3').style.display='';
              document.getElementById('butt4').style.display='';
              document.getElementById('butt5').style.display='';
              document.getElementById('butt6').style.display='';
-             document.getElementById('butt7').style.display='';
              document.getElementById('butt8').style.display='';
+             document.cookie = "pndnameu4=" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+             document.cookie = "pndnameu4=" + arrn[p];
         }
 
     </script>
