@@ -9,7 +9,6 @@
             {% csrf_token %}
     <button style="font-size: min(23px, 2.0vw);" class="btn btn-success btn" id = 'butt7' type="submit" name="klass" onclick="Fun1()"> К СПИСКУ КЛАССА </button></br></br>
 
-
      <h4 id = 'name'> </h4>
      <h4 id = 'name1'> </h4>
 
@@ -21,7 +20,6 @@
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt5' type="submit" value="2" name="kb" onclick="Fun()"> 2 Балла </button>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt6' type="submit" value="3" name="kb" onclick="Fun()"> 3 Балла </button></br></br>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn-sm" id = 'butt8' type="submit" name="rep" onclick="Fun()"> Отмена. СНОВА </button>
-
     </form>
     </div>
 
@@ -49,15 +47,16 @@
         }
     rgr = 0;
     arp = [0];
+    fl = 0;
     for (i = 0; i < vyh.length; i++)
         {
-         k = 2 ** (3 - vyh[i]);
+         k = 3 ** (5 - vyh[i]);
          if (k < 2) {k = 0;}
+         else {fl = 1;}
          rgr += k;
-         arp.push(rgr)
-         console.log('sds', arp)
+         arp.push(rgr);
         }
-
+    if (fl == 0) {window.location.assign('begin');}
     function Fun1()
         {
              document.getElementById('butt1').style.display='none';
@@ -88,11 +87,11 @@
             timerId = setInterval(() => Funca(), 100);}
 
         function Funca () {
-             if (i % 20 == 0) {j++}
+             if (i % 20 == 0) {j++;}
              if (i == t) {
                 clearInterval(timerId);
                 localStorage.setItem('kontr', 2);
-                document.getElementById('name').innerHTML = '';
+                document.getElementById('name').style.display='none';
                 Funcend();
                 }
              i++;
@@ -121,8 +120,11 @@
              document.getElementById('butt5').style.display='';
              document.getElementById('butt6').style.display='';
              document.getElementById('butt8').style.display='';
-             document.cookie = "pndnameu4=" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-             document.cookie = "pndnameu4=" + arrn[p];
+             alert(arrn[p][0]);
+             stnam = arrn[p][0].charCodeAt(0);
+             for (k = 1; k < arrn[p].length; k++)    {stnam += '$' + arrn[p][k].charCodeAt(0);}
+             alert(stnam);
+             document.cookie = "pndnameu4=" + stnam;
         }
 
     </script>

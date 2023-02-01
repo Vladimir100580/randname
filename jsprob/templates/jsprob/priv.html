@@ -3,8 +3,8 @@
 {% block content %}
 
 <aside>
-    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 2.5vw);"> Здравствуйте{{nm}}! </h5>
-    <h5 class="featuress" id = 'wait0' style="font-style: italic; font-size: min(40px, 2.2vw);"> Укажите, что необходимо выполнить </h5>
+    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(35px, 4.5vw);"> Здравствуйте{{nm}}! </h5>
+    <h5 class="featuress" id = 'wait0' style="font-style: italic; font-size: min(28px, 3.2vw);"> Укажите, что необходимо выполнить </h5>
 </aside>
 
     <div class="features">
@@ -17,13 +17,13 @@
         <h5 style="font-style: italic; font-size: min(35px, 2vw);"> Если Вы уже регистрировались введите </h5>
         <h4> <input type="text" id="inpu" name="lg" placeholder='Ваш уникальный Логин' maxlength="100"  size="20"> </h4></br>
 
-        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ВВЕСТИ </button></br>
+        <button style="font-size: min(18px, 2.6vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ВВЕСТИ </button></br>
         <div style="height:10px"></div>
-        <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn" id = 'butt2' type="submit" name="reg" onclick="Func()"> Зарегистрироваться </button></br></br>
+        <button style="font-size: min(18px, 2.6vw);" class="btn btn-danger btn" id = 'butt2' type="submit" name="reg" onclick="Func()"> Зарегистрироваться </button></br></br>
         {% else %}
         </br>
 
-        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt3' type="submit" name="begin" onclick="Func()"> НАЧАТЬ </button></br>
+        <button style="font-size: min(18px, 2.6vw);" class="btn btn-success btn" id = 'butt3' type="submit" name="begin" onclick="Func()"> НАЧАТЬ </button></br>
         <div style="height:10px"></div>
         <a style="font-size: min(18px, 1.4vw);" href="{% url 'addkl' %}" id = "butt4" class="btn btn-success" onclick="Func()"> Добавить класс </a></br>
         <div style="height:10px"></div>
@@ -32,7 +32,7 @@
         <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt5' type="submit" name="addu4" onclick="Func()"> Добавить учеников в класс </button></br>
         <div style="height:10px"></div>
         {% endif %}
-        <a style="font-size: min(18px, 1.4vw);" href="{% url 'logout' %}" id = "butt6" class="btn btn-danger" onclick="Func()"> Выйти из аккаунта </a>
+        <a style="font-size: min(18px, 2.6vw);" href="{% url 'logout' %}" id = "butt6" class="btn btn-danger" onclick="Func()"> Выйти из аккаунта </a>
         {% endif %}
 
     </form>

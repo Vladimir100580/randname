@@ -3,21 +3,21 @@
 {% block content %}
 
 <aside>
-    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 2.5vw);"> Выберите интересующий Вас класс </h5>
+    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 3.5vw);"> Выберите интересующий Вас класс </h5>
 </aside>
     <div class="features">
 
          <form action="" method="get">
                 {% csrf_token %}
-                <h5><select size="1" name='nomm'>
+                <h5 style="margin-top: 4vh; font-size: min(30px, 2.5vw);"><select size="1" name='nomm'>
                     {% for kl in klasss %}
                         <option value={{ kl }}>{{ kl }}</option>
                     {% endfor %}
                  </select></h5>
         <br>
-        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ПРОДОЛЖИТЬ </button></br>
-        <div style="height:10px"></div>
-        <a style="font-size: min(18px, 1.4vw);"  href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
+        <button style="font-size: min(18px, 2.6vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ПРОДОЛЖИТЬ </button></br>
+        <div style="height:3vh"></div>
+        <a style="font-size: min(18px, 2.6vw);"  href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
 
         </br>
     </form>
