@@ -120,10 +120,8 @@
              document.getElementById('butt5').style.display='';
              document.getElementById('butt6').style.display='';
              document.getElementById('butt8').style.display='';
-             alert(arrn[p][0]);
              stnam = arrn[p][0].charCodeAt(0);
              for (k = 1; k < arrn[p].length; k++)    {stnam += '$' + arrn[p][k].charCodeAt(0);}
-             alert(stnam);
              document.cookie = "pndnameu4=" + stnam;
         }
 
