@@ -11,26 +11,25 @@
              <h5 class='leftstr'style='color: blue'> Ф.И. учащегося </h5>
              <h5 class='centstr'style='color: blue'> Выходов к доске </h5>
              <h5 class='rightstr'style='color: blue'> Баллов </h5>
+             <h5 class='rrightstr'style='color: blue'> P% </h5>
            {% for mas in nms %}
                      {% if mas.0 == '0' %}
                      <h6 class='leftstr'style='color:#AD1457'> {{mas.1}} </h6>
                      <h6 class='centstr'style='color:#AD1457'> {{mas.2}} </h6>
                      <h6 class='rightstr'style='color:#AD1457'> {{mas.3}} </h6>
-                     {% endif %}
-                     {% if mas.0 == '3' %}
-                     <h5 class='leftstr' style='color: white'> {{mas.1}} </h5>
-                     <h5 class='centstr'style='color: white'> {{mas.2}} </h5>
-                     <h5 class='rightstr' style='color: white'> {{mas.3}} </h5>
+                     <h6 class='rrightstr'style='color:#AD1457'> {{mas.4}} </h6>
                      {% endif %}
                      {% if mas.0 == '1' %}
                      <h6 class='leftstr' style='color: #0000ff'> {{mas.1}} </h6>
                      <h6 class='centstr'style='color: #0000ff'> {{mas.2}} </h6>
                      <h6 class='rightstr' style='color: #0000ff'> {{mas.3}} </h6>
+                     <h6 class='rrightstr' style='color: #0000ff'> {{mas.4}} </h6>
                      {% endif %}
                      {% if mas.0 == '2' %}
                      <h6 class='leftstr' style='color: #2E7D32'> {{mas.1}} </h6>
                      <h6 class='centstr'style='color: #2E7D32'> {{mas.2}} </h6>
                      <h6 class='rightstr' style='color: #2E7D32'> {{mas.3}} </h6>
+                     <h6 class='rrightstr' style='color: #2E7D32'> {{mas.4}} </h6>
                      {% endif %}
                 {% endfor %}
         <div style="clear: left"></div>
@@ -40,7 +39,7 @@
                 {% csrf_token %}
         <h5 style="font-style: italic; font-size: min(25px, 1.8vw);" id = 'wt'> Введите намера через пробелы (или запятые) </h5>
         <h5 style="font-style: italic; font-size: min(21px, 1.6vw);"> Если отсутствующих нет, оставьте поле пустым </h5>
-        <h4> <input type="text" id="inpu" name="iskl" placeholder='№№' maxlength="100"  size="40"> </h4></br>
+        <h4> <input type="text" id="inpu" name="iskl" maxlength="100"  size="40"> </h4></br>
         <button style="font-size: min(20px, 1.8vw);" class="btn btn-success btn-sm" id = 'butt1' type="submit" name="gogo" onclick="Func()"> НАЧАТЬ </button></br>
         <div style="height:10px"></div>
         <a style="font-size: min(18px, 1.6vw);" href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
@@ -52,7 +51,7 @@
     <style>
    .leftstr {
     float: left;
-    width: 60%;
+    width: 40%;
     text-align: left;
    }
 
@@ -66,9 +65,17 @@
     width: 20%;
     text-align: left;
    }
+   .rrightstr {
+    float: left;
+    width: 20%;
+    text-align: left;
+   }
+
+
      </style>
 
     <script>
+    document.getElementById("inpu").value = '{{ph}}';
     function Func() {
                 document.getElementById('inpu').style.display='none';
                 document.getElementById('butt1').style.display='none';

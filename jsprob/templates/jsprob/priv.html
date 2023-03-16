@@ -31,6 +31,8 @@
          {% if f == 1 %}
         <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt5' type="submit" name="addu4" onclick="Func()"> Добавить учеников в класс </button></br>
         <div style="height:10px"></div>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt7' type="submit" name="addu44" onclick="Func()"> Изменить число выходов в классе </button></br>
+        <div style="height:10px"></div>
         {% endif %}
         <a style="font-size: min(18px, 2.6vw);" href="{% url 'logout' %}" id = "butt6" class="btn btn-danger" onclick="Func()"> Выйти из аккаунта </a>
         {% endif %}
@@ -49,6 +51,7 @@
     if (fl==1)  {
          document.getElementById('butt3').style.display='none';
          document.getElementById('butt4').style.display='none';
+         document.getElementById('butt7').style.display='none';
          document.getElementById('butt6').style.display='none';
          if (f==1) {document.getElementById('butt5').style.display='none';}
          }

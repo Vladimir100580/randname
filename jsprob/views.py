@@ -18,7 +18,7 @@ def hello(request):
         fl = 0
     f = 0
     if DataKlass.objects.filter(log=user_id).exists(): f = 1
-
+    request.session['phdlyavvoda'] = ''
     if 'reg' in answer:
         return redirect('regist')
     if 'intlg' in answer:
@@ -35,6 +35,9 @@ def hello(request):
         return redirect('addu4')
     if 'addu4' in answer:
         request.session['wayrnd'] = '2'
+        return redirect('addu4')
+    if 'addu44' in answer:
+        request.session['wayrnd'] = '3'
         return redirect('addu4')
     return render(request, 'jsprob/priv.html', {'nm': nm, 'fl': fl, 'fl0': fl0, 'f': f})
 
@@ -66,13 +69,35 @@ def begin(request):
     user_id = request.user.username
     if (user_id == ''): return redirect('home')
     kl = request.session['klas_use']
-    klData = DataKlass.objects.filter(log=user_id, klass=kl).values_list('fios', 'vyhods', 'balls')
+    klData = DataKlass.objects.filter(log=user_id, klass=kl).values_list('fios', 'vyhods', 'balls','res2')
     nms = klData[0][0].split('$}%*№')
     vyhs = klData[0][1].split('$}%*№')
     bals = klData[0][2].split('$}%*№')
+    totv = request.session['totalvyhods'] = int(klData[0][3])
+    pvyh = StringToArrayIntegers(request.session['phdlyavvoda']).arr
+    i = 0
+    masv = []
+    vrs = 0
+    for ii in vyhs:
+        if i+1 not in pvyh:
+            k = 3 ** (totv - int(ii));
+            if k < 2: k = 0
+            vrs += k
+        i += 1
+    i = 0
+    for ii in vyhs:
+        if i + 1 not in pvyh:
+            k = 3 ** (totv - int(ii));
+            if k < 2: k = 0
+            vspom = int(1000*k/vrs + 0.5)/10
+            if vspom==int(vspom): vspom=int(vspom)
+            masv.append(str(vspom))
+        else:
+            masv.append('-')
+        i += 1
     datnvb = []
     for i in range(len(nms)):
-        datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
+        datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i], masv[i] + '%'])
 
     if 'gogo' in answer:
         st = answer.__getitem__('iskl').strip()
@@ -89,25 +114,28 @@ def begin(request):
             if (i+1) not in arisk:
                 nms1.append(nms[i])
                 vyhrnd.append(int(float(vyhs[i])))
-
-        request.session['rndpernamord'] = [[ord(i) for i in n] for n in nms1]
-        request.session['rndpernamord1'] = [n for n in nms1]
-        request.session['rndpervyh'] = vyhrnd
-        return redirect('start')
-    return render(request, 'jsprob/begin.html', {'nms': datnvb})
+        if request.session['phdlyavvoda'] == st:
+            request.session['rndpernamord'] = [[ord(i) for i in n] for n in nms1]
+            request.session['rndpernamord1'] = [n for n in nms1]
+            request.session['rndpervyh'] = vyhrnd
+            return redirect('start')
+        else:
+            request.session['phdlyavvoda'] = st
+            return redirect('begin')
+    return render(request, 'jsprob/begin.html', {'nms': datnvb, 'ph': request.session['phdlyavvoda']})
 
 
 def start(request):
     data = {
         'nam': request.session['rndpernamord'],
         'vyh': request.session['rndpervyh'],
+        'vv': request.session['totalvyhods'],
     }
     answer = request.GET
     if 'kb' in answer:
         b = float(answer.__getitem__('kb'))
         req = request.COOKIES.get('pndnameu4').split('$')
         uch = ''.join(chr(int(float(i))) for i in req)
-        print('uch', uch)
         user_id = request.user.username
         if (user_id == ''): return redirect('home')
         kl = request.session['klas_use']
@@ -115,7 +143,7 @@ def start(request):
         nms = kar.fios.split('$}%*№')
         vyhs = [int(float(i)) for i in kar.vyhods.split('$}%*№')]
         bals = [int(float(i)) for i in kar.balls.split('$}%*№')]
-        print('nms', nms, uch)
+        # print('nms', nms, uch)
         p = nms.index(uch)
         vyhs[p] = vyhs[p] + 1
         bals[p] = bals[p] + b
@@ -131,7 +159,6 @@ def start(request):
         return redirect('start')
     if 'rep' in answer: return redirect('start')
     if 'klass' in answer: return redirect('begin')
-
     return render(request, 'jsprob/start.html', data)
 
 
@@ -148,12 +175,15 @@ def addkl(request):
 
     if 'kl' in answer:
         kl = answer.__getitem__('kl').replace(' ', '_')
+        vv = int(answer.__getitem__('vv'))
         if kl == '': return redirect('addkl')
         if DataKlass.objects.filter(klass=kl, log=user_id).exists():
             return render(request, 'jsprob/ujusekl.html')
-        DataKlass(log=user_id, klass=kl, fios='', vyhods='', balls='').save()
+        DataKlass(log=user_id, klass=kl, fios='', vyhods='', balls='', res2=vv).save()
         return redirect('home')
     return render(request, 'jsprob/addkl.html', {'kls': st})
+
+
 
 
 def addu4(request):
@@ -172,6 +202,7 @@ def addu4(request):
         request.session['klas_use'] = kl
         if request.session['wayrnd'] == '1': return redirect('begin')
         if request.session['wayrnd'] == '2': return redirect('addu41')
+        if request.session['wayrnd'] == '3': return redirect('addu44')
     return render(request, 'jsprob/addu4.html', {'klasss': klasMas})
 
 
@@ -228,6 +259,19 @@ def addu41(request):
         kar.save()
         return redirect('addu41')
     return render(request, 'jsprob/addu41.html', {'nms': datnvb})
+
+
+def addu44(request):      # изменение количества выходов
+    answer = request.GET
+    user_id = request.user.username
+    if (user_id == ''): return redirect('home')
+    kl = request.session['klas_use']
+    kls = DataKlass.objects.get(log=user_id, klass=kl)
+    if 'klvyh' in answer:
+        kls.res2 = int(answer.__getitem__('vv'))
+        kls.save(update_fields=['res2'])
+        return redirect('addu44')
+    return render(request, 'jsprob/izmvyh.html', {'kl': kl, 'vyh': kls.res2})
 
 
 class StringToArrayIntegers:

@@ -1,21 +1,19 @@
 {% extends 'jsprob/shabl.html' %}
-{% block title %} Добавить класс {% endblock %}
+{% block title %} Изменение максимального количества выходов {% endblock %}
 {% block content %}
 
 <aside>
-    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 2.5vw);"> Укажите название добавляемого класса </h5>
+    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 2.5vw);"> Укажите новое максимально число выходов для {{kl}} </h5>
 </aside>
     <div class="features">
 
          <form action="" method="get">
             {% csrf_token %}
-         <h4 id = 'wait'> </h4>
-        <h2 id="tx3"> {{kls}} </h2>
-        <h5 style="font-style: italic; font-size: min(35px, 2vw);" id="tx1"> Введите номер и литер класса </h5>
-        <h4> <input type="text" id="inpu" name="kl" placeholder='Например: 10Б' maxlength="100"  size="10"> </h4></br>
-        <h5 style="font-style: italic; font-size: min(35px, 2vw);" id="tx2"> Введите количество выходов каждого ученика </h5>
-        <input type="number" name="vv" placeholder='от 1 до 10' min="0" max="10" step="1" size="10"> </br></br>
-        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="intlg" onclick="Func()"> ВВЕСТИ </button></br>
+        <h4 id = 'wait'> </h4>
+        <h5 style="font-style: italic; font-size: min(35px, 2vw);" id="tx1"> Текущее количество выходов: {{vyh}} </h5>
+        <h5 style="font-style: italic; font-size: min(35px, 2vw);" id="tx2"> Значение должно быть целым, от 1 до 10 </h5>
+        <input type="number" name="vv" min="0" max="10" step="1" size="10"> </br></br>
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt1' type="submit" name="klvyh" onclick="Func()"> ВВЕСТИ </button></br>
         <div style="height:10px"></div>
         <a style="font-size: min(18px, 1.4vw);"  href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
 
@@ -27,12 +25,10 @@
     <script>
     localStorage.setItem('vrk', 0);
     function Func() {
-    document.getElementById('inpu').style.display='none';
     document.getElementById('butt1').style.display='none';
     document.getElementById('butt2').style.display='none';
     document.getElementById('tx1').style.display='none';
     document.getElementById('tx2').style.display='none';
-    document.getElementById('tx3').style.display='none';
     txt2 = document.getElementById('wait')
     txt2.innerHTML = 'ПОЖАЛУЙСТА, ОЖИДАЙТЕ';
     txt2.style.cssText = 'font-style: italic; font-size: 36px; margin-top: 50px;';
