@@ -3,7 +3,11 @@
 {% block content %}
 
 <aside>
-    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(50px, 3.5vw);"> Выберите интересующий Вас класс </h5>
+    {% if fl == '4' %}
+    <h5 class="featuress" id = 'nomb' style="font-style: italic; font-size: min(35px, 2.5vw);"> Выберите класс, из которого необходимо сделать копию </h5>
+    {% else %}
+    <h5 class="featuress" id = 'nomb1' style="font-style: italic; font-size: min(50px, 3.5vw);"> Выберите интересующий Вас класс </h5>
+    {% endif %}
 </aside>
     <div class="features">
 

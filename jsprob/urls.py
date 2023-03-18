@@ -12,9 +12,9 @@ urlpatterns = [
     path('addu41', views.addu41, name='addu41'),
     path('addu44', views.addu44, name='addu44'),
     path('begin', views.begin, name='begin'),
+    path('copylist', views.copylist, name='copylist'),
     path('start', views.start, name='start'),
     path('regist', views.regist, name='regist'),
-
 
     path('login/',
          LoginView.as_view

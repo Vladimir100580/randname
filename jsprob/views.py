@@ -7,6 +7,11 @@ from django.contrib.auth import authenticate, login
 def hello(request):
     answer = request.GET
     user_id = request.user.username
+    try:
+        po = request.session['klas_use']
+    except:
+        request.session['phdlyavvoda'] = ''
+        request.session['klas_use'] = ''
     fl0 = '0'
     if (user_id != ''):
         nm = request.user.first_name.split('$#$%')
@@ -18,7 +23,6 @@ def hello(request):
         fl = 0
     f = 0
     if DataKlass.objects.filter(log=user_id).exists(): f = 1
-    request.session['phdlyavvoda'] = ''
     if 'reg' in answer:
         return redirect('regist')
     if 'intlg' in answer:
@@ -78,16 +82,19 @@ def begin(request):
     i = 0
     masv = []
     vrs = 0
-    for ii in vyhs:
-        if i+1 not in pvyh:
-            k = 3 ** (totv - int(ii));
-            if k < 2: k = 0
-            vrs += k
-        i += 1
+    try:
+        for ii in vyhs:
+            if i+1 not in pvyh:
+                k = 3 ** (totv - int(ii))
+                if k < 2: k = 0
+                vrs += k
+            i += 1
+    except:
+        return redirect('addu41')
     i = 0
     for ii in vyhs:
         if i + 1 not in pvyh:
-            k = 3 ** (totv - int(ii));
+            k = 3 ** (totv - int(ii))
             if k < 2: k = 0
             vspom = int(1000*k/vrs + 0.5)/10
             if vspom==int(vspom): vspom=int(vspom)
@@ -107,7 +114,6 @@ def begin(request):
         for i in arisk:
             if i not in range(1, len(nms) + 1):
                 return render(request, 'jsprob/nonom.html', {'i': str(i)})
-
         nms1 = []
         vyhrnd = []
         for i in range(0, len(nms)):
@@ -122,7 +128,7 @@ def begin(request):
         else:
             request.session['phdlyavvoda'] = st
             return redirect('begin')
-    return render(request, 'jsprob/begin.html', {'nms': datnvb, 'ph': request.session['phdlyavvoda']})
+    return render(request, 'jsprob/begin.html', {'nms': datnvb, 'ph': request.session['phdlyavvoda'], 'kl': kl})
 
 
 def start(request):
@@ -143,7 +149,6 @@ def start(request):
         nms = kar.fios.split('$}%*№')
         vyhs = [int(float(i)) for i in kar.vyhods.split('$}%*№')]
         bals = [int(float(i)) for i in kar.balls.split('$}%*№')]
-        # print('nms', nms, uch)
         p = nms.index(uch)
         vyhs[p] = vyhs[p] + 1
         bals[p] = bals[p] + b
@@ -172,7 +177,6 @@ def addkl(request):
         st = 'Ваши классы: '
         for i in kls: st = st + i[0] + ', '
         st = st[:len(st) - 2] + '.'
-
     if 'kl' in answer:
         kl = answer.__getitem__('kl').replace(' ', '_')
         vv = int(answer.__getitem__('vv'))
@@ -184,8 +188,6 @@ def addkl(request):
     return render(request, 'jsprob/addkl.html', {'kls': st})
 
 
-
-
 def addu4(request):
     answer = request.GET
     user_id = request.user.username
@@ -195,20 +197,26 @@ def addu4(request):
         request.session['klas_use'] = kls[0][0]
         if request.session['wayrnd'] == '1': return redirect('begin')
         if request.session['wayrnd'] == '2': return redirect('addu41')
+        if request.session['wayrnd'] == '3': return redirect('addu44')
+        if request.session['wayrnd'] == '4': return redirect('copylist')
     klasMas = [i[0] for i in kls]
 
     if 'intlg' in answer:
         kl = answer.__getitem__('nomm')
-        request.session['klas_use'] = kl
+        if request.session['klas_use'] != kl:
+            request.session['klas_use'] = kl
+            request.session['phdlyavvoda'] = ''
         if request.session['wayrnd'] == '1': return redirect('begin')
         if request.session['wayrnd'] == '2': return redirect('addu41')
         if request.session['wayrnd'] == '3': return redirect('addu44')
-    return render(request, 'jsprob/addu4.html', {'klasss': klasMas})
+        if request.session['wayrnd'] == '4': return redirect('copylist')
+    return render(request, 'jsprob/addu4.html', {'klasss': klasMas, 'fl': request.session['wayrnd']})
 
 
 def addu41(request):
     answer = request.GET
     f = 0
+    fl = 0
     user_id = request.user.username
     if (user_id == ''): return redirect('home')
     kl = request.session['klas_use']
@@ -218,6 +226,12 @@ def addu41(request):
     bals = klData[0][2].split('$}%*№')
     datnvb = []
     for i in range(len(nms)): datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i]])
+    if len(datnvb) <= 2: fl = 1
+    if 'copy' in answer:
+        request.session['wayrnd'] = '4'
+        print('мы тут!')
+        request.session['klas_use_p'] = request.session['klas_use']
+        return redirect('addu4')
     if 'intfi' in answer:
         fami = answer.__getitem__('famim').strip()
         if len(fami) < 3: return redirect('addu41')
@@ -258,7 +272,7 @@ def addu41(request):
         kar.balls = '$}%*№'.join(bals)
         kar.save()
         return redirect('addu41')
-    return render(request, 'jsprob/addu41.html', {'nms': datnvb})
+    return render(request, 'jsprob/addu41.html', {'nms': datnvb, 'fl': fl, 'kl': kl})
 
 
 def addu44(request):      # изменение количества выходов
@@ -272,6 +286,28 @@ def addu44(request):      # изменение количества выходо
         kls.save(update_fields=['res2'])
         return redirect('addu44')
     return render(request, 'jsprob/izmvyh.html', {'kl': kl, 'vyh': kls.res2})
+
+
+def copylist(request):
+    user_id = request.user.username
+    if (user_id == ''): return redirect('home')
+    kl = request.session['klas_use']
+    klData = DataKlass.objects.filter(log=user_id, klass=kl).values_list('fios', 'vyhods', 'balls')
+    nms = klData[0][0].split('$}%*№')
+    print('!!!!', len(nms))
+    vyhs = '$}%*№'.join(['0' for _ in range(len(nms))])
+    bals = '$}%*№'.join(['0' for _ in range(len(nms))])
+    print('kl', request.session['klas_use_p'])
+    kar = DataKlass.objects.get(log=user_id, klass=request.session['klas_use_p'])
+    print('nms', nms)
+    print("vyhs", vyhs)
+    print('bals', bals)
+    kar.fios = '$}%*№'.join(nms)
+    kar.vyhods = vyhs
+    kar.balls = bals
+    kar.save()
+    request.session['klas_use'] = request.session['klas_use_p']
+    return redirect('addu41')
 
 
 class StringToArrayIntegers:

@@ -3,7 +3,7 @@
 {% block content %}
 
 <aside>
-    <h2 class="featuress" style="font-style: italic; font-size: min(50px, 2.5vw);" > Ознакомьтесь со статистикой класса </h2>
+    <h2 class="featuress" style="font-style: italic; font-size: min(50px, 2.5vw);" > Ознакомьтесь со статистикой класса: {{kl}} </h2>
     <h4 class="featuress" style="font-style: italic; font-size: min(40px, 2vw);" > При необходимости введите нового ученика </h4>
 </aside>
 
@@ -43,6 +43,10 @@
         <h4> <input type="text" id="inpu" name="famim" placeholder='ФИ ученика' maxlength="100"  size="30"> </h4></br>
         <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn-sm" id = 'butt1' type="submit" name="intfi" onclick="Func()"> Добавить ученика </button></br>
         <div style="height:10px"></div>
+        {% if fl == 1 %}
+        <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn-sm" id = 'butt4' type="submit" name="copy" onclick="Func()"> Скопировать список другого класса </button></br>
+        <div style="height:10px"></div>
+        {% endif %}
         <a style="font-size: max(13px, 1.3vw);" href="{% url 'home' %}" id = 'butt2' class="btn btn-success" onclick="Func()"> СТАРТОВОЕ МЕНЮ </a>
         </br></br>
         <button style="font-size: min(18px, 1.4vw);" class="btn btn-danger btn-sm" id = 'butt3' type="submit" name="delfi" onclick="Func()"> Удалить ученика </button></br>
@@ -69,7 +73,9 @@
      </style>
 
     <script>
+    fl = {{fl}};
     function Func() {
+                if (fl == 1) {document.getElementById('butt4').style.display='none';}
                 document.getElementById('inpu').style.display='none';
                 document.getElementById('butt1').style.display='none';
                 document.getElementById('butt2').style.display='none';

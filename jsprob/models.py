@@ -1,6 +1,7 @@
 from django.db import models
 
 class DataKlass(models.Model):
+    objects = None
     log = models.CharField('Логин', max_length=120)
     fik = models.CharField('ФИО Учителя', max_length=300, default='0')
     klass = models.CharField('Класс', max_length=100, default='0')
