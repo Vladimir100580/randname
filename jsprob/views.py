@@ -229,7 +229,6 @@ def addu41(request):
     if len(datnvb) <= 2: fl = 1
     if 'copy' in answer:
         request.session['wayrnd'] = '4'
-        print('мы тут!')
         request.session['klas_use_p'] = request.session['klas_use']
         return redirect('addu4')
     if 'intfi' in answer:
@@ -294,14 +293,9 @@ def copylist(request):
     kl = request.session['klas_use']
     klData = DataKlass.objects.filter(log=user_id, klass=kl).values_list('fios', 'vyhods', 'balls')
     nms = klData[0][0].split('$}%*№')
-    print('!!!!', len(nms))
     vyhs = '$}%*№'.join(['0' for _ in range(len(nms))])
     bals = '$}%*№'.join(['0' for _ in range(len(nms))])
-    print('kl', request.session['klas_use_p'])
     kar = DataKlass.objects.get(log=user_id, klass=request.session['klas_use_p'])
-    print('nms', nms)
-    print("vyhs", vyhs)
-    print('bals', bals)
     kar.fios = '$}%*№'.join(nms)
     kar.vyhods = vyhs
     kar.balls = bals
