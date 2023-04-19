@@ -92,20 +92,27 @@ def begin(request):
     except:
         return redirect('addu41')
     i = 0
-    for ii in vyhs:
-        if i + 1 not in pvyh:
-            k = 3 ** (totv - int(ii))
-            if k < 2: k = 0
-            vspom = int(1000*k/vrs + 0.5)/10
-            if vspom==int(vspom): vspom=int(vspom)
-            masv.append(str(vspom))
-        else:
-            masv.append('-')
-        i += 1
+    if vrs != 0:
+        for ii in vyhs:
+            if i + 1 not in pvyh:
+                k = 3 ** (totv - int(ii))
+                if k < 2: k = 0
+                vspom = int(1000*k/vrs + 0.5)/10
+                if vspom==int(vspom): vspom=int(vspom)
+                masv.append(str(vspom))
+            else:
+                masv.append('-')
+            i += 1
+    else:
+        for ii in vyhs:
+            if i + 1 not in pvyh:
+                masv.append("0")
+            else:
+                masv.append("-")
+            i += 1
     datnvb = []
     for i in range(len(nms)):
         datnvb.append([str(i % 3), str(i + 1) + ') ' + nms[i], vyhs[i], bals[i], masv[i] + '%'])
-
     if 'gogo' in answer:
         st = answer.__getitem__('iskl').strip()
         if st != '':
