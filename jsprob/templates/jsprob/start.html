@@ -13,7 +13,8 @@
      <h4 id = 'name1'> </h4>
 
     </br>
-    </br></br>
+    <h4 id = 'name2'> </h4>
+    </br>
     </br>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt3' type="submit" value="0" name="kb" onclick="Fun()"> 0 Баллов </button>
     <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn" id = 'butt4' type="submit" value="1" name="kb" onclick="Fun()"> 1 Балл </button>
@@ -35,6 +36,7 @@
     arnam = {{nam}};
     vyh = {{vyh}};
     vv = {{vv}};
+    bls = {{bls}};
     arrn = [];
     kolnam = arnam.length;
     for (i = 0; i < kolnam; i++)
@@ -114,6 +116,8 @@
         {
              razm = Math.floor(1400 / arrn[p].length) / 10;
              fs = 'font-size: min(200px, ' + razm + 'vw)';
+             document.getElementById('name2').innerHTML = 'Выходов: ' + vyh[p] + '(из ' + vv + '), баллов: ' + bls[p];
+             document.getElementById('name2').style.cssText = 'font-style: italic; font-size: 20px; color: blue';
              document.getElementById('name1').innerHTML = arrn[p];
              document.getElementById('name1').style.cssText = 'font-style: italic; ' + fs + '; color: red';
              document.getElementById('butt3').style.display='';

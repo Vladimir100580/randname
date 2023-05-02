@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import DataKlass
 from django.contrib.auth import authenticate, login
+import datetime
 
 
 def hello(request):
@@ -13,6 +14,45 @@ def hello(request):
         request.session['phdlyavvoda'] = ''
         request.session['klas_use'] = ''
     fl0 = '0'
+
+    time_posted = datetime.datetime(2023, 6, 1, 17, 38, 0)
+    days = (time_posted - datetime.datetime.now()).days
+    dt = (time_posted - datetime.datetime.now()).seconds
+    t0 = days * 86400 + dt
+    # t = days
+    # days = str(days)
+    # tx1 = ' дней'
+    # if (t // 10) % 10 != 1:
+    #     if t % 10 == 2 or t % 10 == 3 or t % 10 == 4: tx1 = ' дня'
+    #     if t % 10 == 1: tx1 = ' день'
+    # if t < 1: days = tx1 = ""
+    # dt = dt % 86400
+    # hours = dt // 3600
+    # t = hours
+    # hours = str(hours)
+    # tx2 = ' часов'
+    # if (t // 10) % 10 != 1:
+    #     if t % 10 == 2 or t % 10 == 3 or t % 10 == 4: tx2 = ' часа'
+    #     if t % 10 == 1: tx2 = ' час'
+    # if t == 0: hours = tx2 = ""
+    # dt = dt % 3600
+    # min = dt // 60
+    # t = min
+    # min = str(min)
+    # tx3 = ' минут'
+    # if (t // 10) % 10 != 1:
+    #     if t % 10 == 2 or t % 10 == 3 or t % 10 == 4: tx3 = ' минуты'
+    #     if t % 10 == 1: tx3 = ' минута'
+    # txtt = ""
+    # if t == 0: min = tx3 = ""
+    # if tx1 != "": txtt = days + tx1
+    # if txtt != '' and tx2!='': txtt += ", "
+    # txtt += hours + tx2
+    # if txtt != '' and tx3!='': txtt += ", "
+    # txtt += min + tx3
+    # txtt += "."
+
+
     if (user_id != ''):
         nm = request.user.first_name.split('$#$%')
         if len(nm) == 4: fl0 = '1'
@@ -43,7 +83,14 @@ def hello(request):
     if 'addu44' in answer:
         request.session['wayrnd'] = '3'
         return redirect('addu4')
-    return render(request, 'jsprob/priv.html', {'nm': nm, 'fl': fl, 'fl0': fl0, 'f': f})
+    data = {
+        'nm': nm,
+        'fl': fl,
+        'fl0': fl0,
+        'f': f,
+        't0': t0
+    }
+    return render(request, 'jsprob/priv.html', data)
 
 
 def regist(request):
@@ -123,14 +170,17 @@ def begin(request):
                 return render(request, 'jsprob/nonom.html', {'i': str(i)})
         nms1 = []
         vyhrnd = []
+        balss = []
         for i in range(0, len(nms)):
             if (i+1) not in arisk:
                 nms1.append(nms[i])
                 vyhrnd.append(int(float(vyhs[i])))
+                balss.append(int(float(bals[i])))
         if request.session['phdlyavvoda'] == st:
             request.session['rndpernamord'] = [[ord(i) for i in n] for n in nms1]
             request.session['rndpernamord1'] = [n for n in nms1]
             request.session['rndpervyh'] = vyhrnd
+            request.session['rndballs'] = balss
             return redirect('start')
         else:
             request.session['phdlyavvoda'] = st
@@ -143,6 +193,7 @@ def start(request):
         'nam': request.session['rndpernamord'],
         'vyh': request.session['rndpervyh'],
         'vv': request.session['totalvyhods'],
+        'bls': request.session['rndballs'],
     }
     answer = request.GET
     if 'kb' in answer:
