@@ -40,7 +40,8 @@
         <form action="" method="get">
                 {% csrf_token %}
         <h5 style="font-style: italic; font-size: min(25px, 1.8vw);" id = 'wt'> Введите фаимлию и имя ученика через пробел </h5>
-        <h4> <input type="text" id="inpu" name="famim" placeholder='ФИ ученика' maxlength="100"  size="30"> </h4></br>
+        <h4><textarea cols="40" rows="4" name="comment"></textarea></h4>
+<!--        <h4> <input type="text" id="inpu" name="famim" placeholder='ФИ ученика' maxlength="100"  size="30"> </h4></br>-->
         <button style="font-size: min(18px, 1.4vw);" class="btn btn-success btn-sm" id = 'butt1' type="submit" name="intfi" onclick="Func()"> Добавить ученика </button></br>
         <div style="height:10px"></div>
         {% if fl == 1 %}

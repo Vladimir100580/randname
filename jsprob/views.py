@@ -15,7 +15,7 @@ def hello(request):
         request.session['klas_use'] = ''
     fl0 = '0'
 
-    time_posted = datetime.datetime(2023, 6, 1, 17, 38, 0)
+    time_posted = datetime.datetime(2024, 6, 1, 7, 0, 0) # учитываем сервеное смещение
     days = (time_posted - datetime.datetime.now()).days
     dt = (time_posted - datetime.datetime.now()).seconds
     t0 = days * 86400 + dt
@@ -290,28 +290,36 @@ def addu41(request):
         request.session['klas_use_p'] = request.session['klas_use']
         return redirect('addu4')
     if 'intfi' in answer:
-        fami = answer.__getitem__('famim').strip()
-        if len(fami) < 3: return redirect('addu41')
-        if DataKlass.objects.filter(log=user_id, klass=kl).exists() and fami in nms:
-            return render(request, 'jsprob/ujusefi.html', {'fami': fami, 'kl': kl})
-        if nms[0] == '':
-            nms[0] = fami
-            vyhs[0] = '0'
-            bals[0] = '0'
-        else:
-            nms.append(fami)
-            vyhs.append('0')
-            bals.append('0')
+        famis = answer.__getitem__('comment').replace(chr(13), "").split(chr(10))
+
+        for fami in famis:
+
+        # fami = answer.__getitem__('famim').strip()
+            if len(fami) < 3: continue
+            if DataKlass.objects.filter(log=user_id, klass=kl).exists() and fami in nms:
+                continue
+                # return render(request, 'jsprob/ujusefi.html', {'fami': fami, 'kl': kl})
+            if nms[0] == '':
+                nms[0] = fami
+                vyhs[0] = '0'
+                bals[0] = '0'
+            else:
+                nms.append(fami)
+                vyhs.append('0')
+                bals.append('0')
         f = 1
     if 'delfi' in answer:
-        fami = answer.__getitem__('famim').strip()
-        if len(fami) < 3: return redirect('addu41')
-        if fami not in nms:
-            return render(request, 'jsprob/nofi.html', {'fami': fami, 'kl': kl})
-        i = nms.index(fami)
-        nms.pop(i)
-        vyhs.pop(i)
-        bals.pop(i)
+        famis = answer.__getitem__('comment').replace(chr(13), "").split(chr(10))
+
+        for fami in famis:
+            if len(fami) < 3: continue
+            if fami not in nms:
+                continue
+                # return render(request, 'jsprob/nofi.html', {'fami': fami, 'kl': kl})
+            i = nms.index(fami)
+            nms.pop(i)
+            vyhs.pop(i)
+            bals.pop(i)
         f = 1
     if f == 1:
         fl = 1
